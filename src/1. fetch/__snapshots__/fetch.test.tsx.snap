@@ -1,9 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`Fetch fetches data with window.fetch 1`] = `
-<p>
-  there are 
-  1
-   users
-</p>
-`;

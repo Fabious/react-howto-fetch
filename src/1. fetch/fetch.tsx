@@ -6,21 +6,18 @@ export default function Fetch() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    setUsers([{ id: 1 }]);
-    // fetch(endpoint)
-    //   .then((response) => {
-    //     if (response.ok) {
-    //       response.json().then((data) => setUsers(data));
-    //     }
-    //     throw response;
-    //   })
-    //   .catch((error) => {
-    //     console.error('Error fetching data: ', error);
-    //     setError(error);
-    //   });
+    fetch(endpoint)
+      .then((response) => {
+        if (response.ok) {
+          response.json().then((data) => setUsers(data));
+        }
+      })
+      .catch((error) => {
+        setError(error);
+      });
   }, []);
 
-  if (error) return <>Error!</>;
+  if (error) return <>Error! Reason: {error}</>;
 
   return <p>there are {users.length} users</p>;
 }
