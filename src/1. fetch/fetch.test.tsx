@@ -1,6 +1,6 @@
-import Fetch from './fetch';
 import { render, unmountComponentAtNode } from 'react-dom';
 import { act } from 'react-dom/test-utils';
+import Fetch from './fetch';
 
 let container: HTMLDivElement | null = null;
 beforeEach(() => {

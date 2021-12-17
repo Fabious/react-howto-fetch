@@ -1,8 +1,8 @@
-import Axios from './axios';
-import { render, screen, waitFor } from '@testing-library/react';
 import axios from 'axios';
-import { endpoint } from '../api';
+import { render, screen, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
+import Axios from './axios';
+import { endpoint } from '../api';
 
 jest.mock('axios');
 const mockAxios = axios as jest.Mocked<typeof axios>;

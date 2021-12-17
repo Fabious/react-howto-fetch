@@ -1,13 +1,10 @@
-import { useState } from 'react';
+import { useFetch } from './hooks/useFetch';
+import { endpoint } from '../api';
 
-function App() {
-  const [count, setCount] = useState(0);
+export default function App() {
+  const { data: users, error } = useFetch(endpoint);
 
-  return (
-    <button type="button" onClick={() => setCount((count) => count + 1)}>
-      count is: {count}
-    </button>
-  );
+  if (error) return <p>Error! Reason: {error}</p>;
+
+  return <p>there are {users?.length ?? 0} users</p>;
 }
-
-export default App;
