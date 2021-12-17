@@ -33,19 +33,7 @@ it('fetches data with window.fetch', async () => {
     `"there are 3 users"`
   );
 
-  fetchMock.mockRestore();
-});
-
-it('renders with no data initially', () => {
-  const fetchMock = jest.spyOn(global, 'fetch');
-  render(<Fetch />, container);
-
-  expect(fetchMock).not.toHaveBeenCalled();
-  expect((container as HTMLDivElement).textContent).toMatchInlineSnapshot(
-    `"there are 0 users"`
-  );
-
-  fetchMock.mockRestore();
+  fetchMock.mockClear();
 });
 
 it('shows an error if fetch rejects', async () => {
@@ -63,5 +51,5 @@ it('shows an error if fetch rejects', async () => {
     `"Error! Reason: Access denied"`
   );
 
-  fetchMock.mockRestore();
+  fetchMock.mockClear();
 });

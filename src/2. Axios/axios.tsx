@@ -7,7 +7,8 @@ export default function App() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    axios(endpoint)
+    axios
+      .get(endpoint)
       .then((response) => {
         setUsers(response.data);
       })
@@ -16,7 +17,7 @@ export default function App() {
       });
   }, []);
 
-  if (error) return <>Error! Reason: {error}</>;
+  if (error) return <p>Error! Reason: {error}</p>;
 
   return <p>there are {users.length} users</p>;
 }

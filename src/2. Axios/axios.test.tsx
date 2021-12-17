@@ -1,47 +1,54 @@
 import Axios from './axios';
-import { render, unmountComponentAtNode } from 'react-dom';
-import { act } from 'react-dom/test-utils';
+import { render, screen, waitFor } from '@testing-library/react';
 import axios from 'axios';
 import { endpoint } from '../api';
+import '@testing-library/jest-dom';
 
 jest.mock('axios');
-const axiosMock = axios as jest.Mocked<typeof axios>;
-
-let container: HTMLDivElement | null = null;
-beforeEach(() => {
-  // setup a DOM element as a render target
-  container = document.createElement('div');
-  document.body.appendChild(container);
-});
+const mockAxios = axios as jest.Mocked<typeof axios>;
 
 afterEach(() => {
-  // cleanup on exiting
-  unmountComponentAtNode(container as Element);
-  (container as HTMLDivElement).remove();
-  container = null;
+  mockAxios.get.mockClear();
 });
+
+/**
+ * NOTE: on first guess it seems good to test the initial
+ * render, BEFORE the useEffect triggers. But axios will get
+ * called on first render, thus this test doesn't work, and
+ * it SHOULDN'T! You must test components only when you are sure
+ * no operations is running, like a async request in this case.
+ */
+// it('renders no data initially', () => {
+//   render(<Axios />);
+
+//   expect(mockAxios.get).not.toHaveBeenCalled();
+//   expect(screen.getByText(/there are 0 users/i)).toBeInTheDocument();
+// });
 
 it('renders number of users fetched', async () => {
   const fakeUsers = [{ id: 1 }, { id: 2 }, { id: 3 }];
-  axiosMock.mockResolvedValue({ data: fakeUsers });
+  mockAxios.get.mockResolvedValue({ data: fakeUsers });
 
-  await act(async () => {
-    render(<Axios />, container);
+  render(<Axios />);
+
+  expect(mockAxios.get).toBeCalledTimes(1);
+  expect(mockAxios.get).toHaveBeenCalledWith(endpoint);
+  await waitFor(() => {
+    expect(screen.getByText(/there are 3 users/i)).toBeInTheDocument();
   });
-
-  expect(axiosMock).toHaveBeenCalledWith(endpoint);
-  expect((container as HTMLDivElement).textContent).toMatchInlineSnapshot(
-    `"there are 3 users"`
-  );
-
-  axiosMock.mockReset();
 });
 
-// it('renders no data initially', () => {
-//   render(<Axios />, container);
+it('renders an error on failed request', async () => {
+  const errorMessage = 'All your base are belong to us';
+  mockAxios.get.mockRejectedValue(errorMessage);
 
-//   expect(axiosMock).not.toHaveBeenCalled();
-//   expect((container as HTMLDivElement).textContent).toMatchInlineSnapshot(
-//     `"there are 0 users"`
-//   );
-// });
+  render(<Axios />);
+
+  expect(mockAxios.get).toBeCalledTimes(1);
+  expect(mockAxios.get).toBeCalledWith(endpoint);
+  await waitFor(() => {
+    expect(
+      screen.getByText(`Error! Reason: ${errorMessage}`)
+    ).toBeInTheDocument();
+  });
+});

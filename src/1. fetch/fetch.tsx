@@ -17,7 +17,7 @@ export default function Fetch() {
       });
   }, []);
 
-  if (error) return <>Error! Reason: {error}</>;
+  if (error) return <p>Error! Reason: {error}</p>;
 
   return <p>there are {users.length} users</p>;
 }
