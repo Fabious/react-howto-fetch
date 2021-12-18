@@ -33,6 +33,11 @@ it('renders number of users fetched', async () => {
 
   expect(mockAxios.get).toBeCalledTimes(1);
   expect(mockAxios.get).toHaveBeenCalledWith(endpoint);
+  /**
+   * A better way to write this assertion is by using findByText.
+   * This way you don't need waitFor, as findByText is a promise.
+   * See test below 👇
+   */
   await waitFor(() => {
     expect(screen.getByText(/there are 3 users/i)).toBeInTheDocument();
   });
@@ -46,9 +51,8 @@ it('renders an error on failed request', async () => {
 
   expect(mockAxios.get).toBeCalledTimes(1);
   expect(mockAxios.get).toBeCalledWith(endpoint);
-  await waitFor(() => {
-    expect(
-      screen.getByText(`Error! Reason: ${errorMessage}`)
-    ).toBeInTheDocument();
-  });
+  // better assertion! 👇
+  expect(
+    await screen.findByText(`Error! Reason: ${errorMessage}`)
+  ).toBeInTheDocument();
 });

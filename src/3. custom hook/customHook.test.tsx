@@ -20,9 +20,7 @@ describe('CustomHook', () => {
 
     expect(mockAxios.get).toBeCalledTimes(1);
     expect(mockAxios.get).toHaveBeenCalledWith(endpoint);
-    await waitFor(() => {
-      expect(screen.getByText(/there are 4 users/i)).toBeInTheDocument();
-    });
+    expect(await screen.findByText(/there are 4 users/i)).toBeInTheDocument();
   });
 
   it('renders an error on failed request', async () => {
@@ -33,10 +31,8 @@ describe('CustomHook', () => {
 
     expect(mockAxios.get).toBeCalledTimes(1);
     expect(mockAxios.get).toBeCalledWith(endpoint);
-    await waitFor(() => {
-      expect(
-        screen.getByText(`Error! Reason: ${errorMessage}`)
-      ).toBeInTheDocument();
-    });
+    expect(
+      await screen.findByText(`Error! Reason: ${errorMessage}`)
+    ).toBeInTheDocument();
   });
 });
