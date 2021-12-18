@@ -13,10 +13,10 @@ afterEach(() => {
 
 /**
  * NOTE: on first guess it seems good to test the initial
- * render, BEFORE the useEffect triggers. But axios will get
+ * render, before the useEffect triggers. But axios will get
  * called on first render, thus this test doesn't work, and
  * it SHOULDN'T! You must test components only when you are sure
- * no operations is running, like a async request in this case.
+ * no operations is running, like an async request in this case.
  */
 // it('renders no data initially', () => {
 //   render(<Axios />);
