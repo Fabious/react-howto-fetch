@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { endpoint } from '../api';
 
-export default function App() {
+export default function Axios() {
   const [users, setUsers] = useState([]);
   const [error, setError] = useState(null);
 
